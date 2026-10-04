@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PK Smart Deals — Classic Store</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background: #ffffff; color: #111111; padding: 30px 15px; display: flex; justify-content: center; }
+        .container { max-width: 480px; width: 100%; border: 1px solid #e5e5e5; padding: 25px; border-radius: 4px; }
+        
+        header { text-align: center; border-bottom: 2px solid #111111; padding-bottom: 15px; margin-bottom: 25px; }
+        .brand { font-size: 20px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+
+        .product-card { border-bottom: 1px dashed #ccc; padding-bottom: 20px; margin-bottom: 25px; }
+        .p-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+        .p-price { font-size: 15px; color: #444; margin-bottom: 12px; }
+
+        .video-container { width: 100%; margin-bottom: 15px; border-radius: 4px; overflow: hidden; background: #000; }
+        .video-container video { width: 100%; height: 250px; display: block; object-fit: cover; }
+
+        .btn-group { display: flex; gap: 10px; }
+        .btn { flex: 1; padding: 12px; border: none; font-size: 12px; font-weight: 600; text-transform: uppercase; cursor: pointer; letter-spacing: 1px; }
+        .btn-cart { background: #ffffff; color: #111111; border: 1px solid #111111; }
+        .btn-buy { background: #111111; color: #ffffff; }
+        
+        /* Cart Box */
+        .cart-box { background: #fafafa; border: 1px solid #111111; padding: 15px; margin-bottom: 25px; display: none; }
+        .cart-title { font-size: 12px; font-weight: 700; text-transform: uppercase; border-bottom: 1px solid #ccc; padding-bottom: 6px; margin-bottom: 10px; letter-spacing: 1px; }
+        .cart-item { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; }
+        .cart-total { font-weight: 700; font-size: 14px; border-top: 1px solid #111111; padding-top: 8px; margin-top: 10px; }
+
+        /* Form Popup Section */
+        .form-section { display: none; margin-top: 20px; border-top: 2px solid #111; padding-top: 20px; }
+        iframe { width: 100%; height: 600px; border: none; }
+        footer { margin-top: 25px; text-align: center; font-size: 11px; color: #777; text-transform: uppercase; letter-spacing: 1px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="brand">PK Smart Deals</div>
+    </header>
+
+    <!-- PRODUCT 1 -->
+    <div class="product-card">
+        <div class="p-title">Mini Hair Straightener & Curler</div>
+        <div class="p-price">PKR 1,299 — Cash on Delivery</div>
+        
+        <div class="video-container">
+            <video controls autoplay loop muted playsinline>
+                <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-cart" onclick="addToCart('Mini Hair Straightener', 1299)">Add to Cart</button>
+            <button class="btn btn-buy" onclick="openOrderForm()">Buy It Now</button>
+        </div>
+    </div>
+
+    <!-- CART BOX -->
+    <div id="cartBox" class="cart-box">
+        <div class="cart-title">Your Cart</div>
+        <div id="cartItems"></div>
+        <div id="cartTotal" class="cart-total">Total Bill: PKR 0</div>
+        <button class="btn btn-buy" style="width: 100%; margin-top: 12px;" onclick="openOrderForm()">Checkout & Order Now</button>
+    </div>
+
+    <!-- GOOGLE FORM DISPLAY SECTION -->
+    <div id="formSection" class="form-section">
+        <h3 style="font-size: 14px; text-transform: uppercase; margin-bottom: 10px; text-align: center;">Order Details Form</h3>
+        <!-- AAPKA GOOGLE FORM EMBED -->
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfZ_REPLACE_WITH_YOUR_VIEWFORM_LINK/viewform?embedded=true">Loading…</iframe>
+    </div>
+
+    <footer>
+        100% Verified Quality • Cash on Delivery
+    </footer>
+</div>
+
+<script>
+    let cart = [];
+
+    function addToCart(name, price) {
+        cart.push({ name, price });
+        updateCartUI();
+    }
+
+    function updateCartUI() {
+        let cartBox = document.getElementById('cartBox');
+        let cartItems = document.getElementById('cartItems');
+        let cartTotal = document.getElementById('cartTotal');
+
+        cartBox.style.display = 'block';
+        cartItems.innerHTML = '';
+        let total = 0;
+
+        cart.forEach((item) => {
+            total += item.price;
+            cartItems.innerHTML += `<div class="cart-item"><span>${item.name}</span><span>PKR ${item.price}</span></div>`;
+        });
+
+        cartTotal.innerHTML = `Total Bill: PKR ${total}`;
+    }
+
+    function openOrderForm() {
+        document.getElementById('formSection').style.display = 'block';
+        document.getElementById('formSection').scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
