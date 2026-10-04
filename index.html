@@ -3,111 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PK Smart Deals — Classic Store</title>
+    <title>PK Smart Deals — Official Store</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background: #ffffff; color: #111111; padding: 30px 15px; display: flex; justify-content: center; }
-        .container { max-width: 480px; width: 100%; border: 1px solid #e5e5e5; padding: 25px; border-radius: 4px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background: #f8f9fa; color: #111111; padding-bottom: 60px; }
+
+        /* Top Bar & Header */
+        .top-bar { background: #111111; color: #ffffff; font-size: 11px; text-align: center; padding: 8px; text-transform: uppercase; letter-spacing: 1px; }
+        header { background: #ffffff; border-bottom: 1px solid #eeeeee; padding: 20px; text-align: center; position: sticky; top: 0; z-index: 10; }
+        .brand { font-size: 22px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
+
+        /* Product Grid */
+        .container { max-width: 900px; margin: 30px auto; padding: 0 15px; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 25px; }
+
+        .product-card { background: #ffffff; border: 1px solid #e8e8e8; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.03); display: flex; flex-direction: column; }
         
-        header { text-align: center; border-bottom: 2px solid #111111; padding-bottom: 15px; margin-bottom: 25px; }
-        .brand { font-size: 20px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
-
-        .product-card { border-bottom: 1px dashed #ccc; padding-bottom: 20px; margin-bottom: 25px; }
-        .p-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
-        .p-price { font-size: 15px; color: #444; margin-bottom: 12px; }
-
-        .video-container { width: 100%; margin-bottom: 15px; border-radius: 4px; overflow: hidden; background: #000; }
-        .video-container video { width: 100%; height: 250px; display: block; object-fit: cover; }
-
-        .btn-group { display: flex; gap: 10px; }
-        .btn { flex: 1; padding: 12px; border: none; font-size: 12px; font-weight: 600; text-transform: uppercase; cursor: pointer; letter-spacing: 1px; }
-        .btn-cart { background: #ffffff; color: #111111; border: 1px solid #111111; }
-        .btn-buy { background: #111111; color: #ffffff; }
+        /* Product Image Styling */
+        .product-media { position: relative; width: 100%; height: 260px; background: #fafafa; overflow: hidden; }
+        .product-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+        .product-card:hover .product-media img { transform: scale(1.03); }
         
-        /* Cart Box */
-        .cart-box { background: #fafafa; border: 1px solid #111111; padding: 15px; margin-bottom: 25px; display: none; }
-        .cart-title { font-size: 12px; font-weight: 700; text-transform: uppercase; border-bottom: 1px solid #ccc; padding-bottom: 6px; margin-bottom: 10px; letter-spacing: 1px; }
-        .cart-item { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; }
-        .cart-total { font-weight: 700; font-size: 14px; border-top: 1px solid #111111; padding-top: 8px; margin-top: 10px; }
+        .product-info { padding: 18px; display: flex; flex-direction: column; flex-grow: 1; }
+        .p-badge { font-size: 10px; background: #111111; color: #ffffff; padding: 3px 8px; border-radius: 3px; font-weight: 700; width: fit-content; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .p-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: #111111; }
+        .p-price { font-size: 16px; font-weight: 800; color: #111111; margin-bottom: 15px; }
 
-        /* Form Popup Section */
-        .form-section { display: none; margin-top: 20px; border-top: 2px solid #111; padding-top: 20px; }
-        iframe { width: 100%; height: 600px; border: none; }
-        footer { margin-top: 25px; text-align: center; font-size: 11px; color: #777; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-group { display: flex; gap: 8px; margin-top: auto; }
+        .btn { flex: 1; padding: 13px; border: none; font-size: 12px; font-weight: 700; text-transform: uppercase; cursor: pointer; letter-spacing: 1px; border-radius: 4px; }
+        .btn-buy { background: #111111; color: #ffffff; width: 100%; }
+        .btn-buy:hover { background: #333333; }
+
+        /* Modal / Pop-up Form Section */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.65); z-index: 100; justify-content: center; align-items: center; padding: 15px; }
+        .modal-content { background: #ffffff; width: 100%; max-width: 500px; height: 85vh; border-radius: 8px; overflow: hidden; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .close-btn { position: absolute; top: 12px; right: 15px; font-size: 22px; font-weight: bold; cursor: pointer; z-index: 101; background: #ffffff; width: 32px; height: 32px; border-radius: 50%; text-align: center; line-height: 30px; border: 1px solid #ddd; }
+        iframe { width: 100%; height: 100%; border: none; }
+        
+        footer { text-align: center; font-size: 11px; color: #777777; margin-top: 40px; text-transform: uppercase; letter-spacing: 1px; }
     </style>
 </head>
 <body>
 
+<div class="top-bar">Cash on Delivery Available Across Pakistan</div>
+
+<header>
+    <div class="brand">PK Smart Deals</div>
+</header>
+
 <div class="container">
-    <header>
-        <div class="brand">PK Smart Deals</div>
-    </header>
 
     <!-- PRODUCT 1 -->
     <div class="product-card">
-        <div class="p-title">Mini Hair Straightener & Curler</div>
-        <div class="p-price">PKR 1,299 — Cash on Delivery</div>
-        
-        <div class="video-container">
-            <video controls autoplay loop muted playsinline>
-                <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-            </video>
+        <div class="product-media">
+            <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=500&q=80" alt="Mini Hair Straightener">
         </div>
-
-        <div class="btn-group">
-            <button class="btn btn-cart" onclick="addToCart('Mini Hair Straightener', 1299)">Add to Cart</button>
-            <button class="btn btn-buy" onclick="openOrderForm()">Buy It Now</button>
+        <div class="product-info">
+            <span class="p-badge">Free Delivery</span>
+            <div class="p-title">Mini Hair Straightener & Curler</div>
+            <div class="p-price">PKR 1,299</div>
+            <div class="btn-group">
+                <button class="btn btn-buy" onclick="openCheckout()">Buy Now (COD)</button>
+            </div>
         </div>
     </div>
 
-    <!-- CART BOX -->
-    <div id="cartBox" class="cart-box">
-        <div class="cart-title">Your Cart</div>
-        <div id="cartItems"></div>
-        <div id="cartTotal" class="cart-total">Total Bill: PKR 0</div>
-        <button class="btn btn-buy" style="width: 100%; margin-top: 12px;" onclick="openOrderForm()">Checkout & Order Now</button>
+    <!-- PRODUCT 2 -->
+    <div class="product-card">
+        <div class="product-media">
+            <img src="https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=500&q=80" alt="3D Crystal Ball Light">
+        </div>
+        <div class="product-info">
+            <span class="p-badge">Best Seller</span>
+            <div class="p-title">3D Crystal Ball Night Light</div>
+            <div class="p-price">PKR 1,499</div>
+            <div class="btn-group">
+                <button class="btn btn-buy" onclick="openCheckout()">Buy Now (COD)</button>
+            </div>
+        </div>
     </div>
 
-    <!-- GOOGLE FORM DISPLAY SECTION -->
-    <div id="formSection" class="form-section">
-        <h3 style="font-size: 14px; text-transform: uppercase; margin-bottom: 10px; text-align: center;">Order Details Form</h3>
-        <!-- AAPKA GOOGLE FORM EMBED -->
-        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScF7trhctYlV5FJVytrrDZB67QS8IfkZNcvRgerF0JTVsWKkQ/viewform?usp=sharing&ouid=106210283484085157032/viewform?embedded=true">Loading…</iframe>
-    </div>
+</div>
 
-    <footer>
-        100% Verified Quality • Cash on Delivery
-    </footer>
+<footer>
+    100% Verified Quality • Cash on Delivery
+</footer>
+
+<!-- CHECKOUT MODAL POPUP -->
+<div id="checkoutModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeCheckout()">&times;</span>
+        <!-- AAPKA GOOGLE FORM RESPONDER LINK HERE -->
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfZ_REPLACE_WITH_YOUR_VIEWFORM_LINK/viewform?embedded=true">Loading…</iframe>
+    </div>
 </div>
 
 <script>
-    let cart = [];
-
-    function addToCart(name, price) {
-        cart.push({ name, price });
-        updateCartUI();
+    function openCheckout() {
+        document.getElementById('checkoutModal').style.display = 'flex';
     }
-
-    function updateCartUI() {
-        let cartBox = document.getElementById('cartBox');
-        let cartItems = document.getElementById('cartItems');
-        let cartTotal = document.getElementById('cartTotal');
-
-        cartBox.style.display = 'block';
-        cartItems.innerHTML = '';
-        let total = 0;
-
-        cart.forEach((item) => {
-            total += item.price;
-            cartItems.innerHTML += `<div class="cart-item"><span>${item.name}</span><span>PKR ${item.price}</span></div>`;
-        });
-
-        cartTotal.innerHTML = `Total Bill: PKR ${total}`;
-    }
-
-    function openOrderForm() {
-        document.getElementById('formSection').style.display = 'block';
-        document.getElementById('formSection').scrollIntoView({ behavior: 'smooth' });
+    function closeCheckout() {
+        document.getElementById('checkoutModal').style.display = 'none';
     }
 </script>
 
